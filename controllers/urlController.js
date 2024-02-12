@@ -1,8 +1,12 @@
 const urlModel = require("../models/urlModel");
+const validator = require("validator");
 
 const createShortUrl = async (req, res) => {
   try {
     const { fullUrl } = req.body;
+    if (!validator.isURL(fullUrl)) {
+      return res.status(400).json({ error: "Invalid URL" });
+    }
     const existingURL = await urlModel.findOne({ fullUrl });
     if (existingURL) {
       return res.status(200).json({ shortUrl: existingURL.shortUrl });
