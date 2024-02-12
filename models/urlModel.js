@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
 const { nanoid } = require("nanoid");
 
-const urlSchema = new mongoose.Schema({
+const shortUrlSchema = new mongoose.Schema({
   fullUrl: { type: String, required: true },
   shortUrl: {
     type: String,
     required: true,
     unique: true,
-    default: () => nanoid.substring(0, 10),
+    default: () => nanoid().substring(0, 10),
   },
   clicks: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now, required: true },
 });
-const urlModel = mongoose.model("url", urlSchema);
+const urlModel = mongoose.model("url", shortUrlSchema);
 module.exports = urlModel;
