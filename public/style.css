@@ -28,4 +28,7 @@ select,
 }
 footer{
   background-color: #333;
+}     
+#qrCodeContainer {
+  display: none;
 }
