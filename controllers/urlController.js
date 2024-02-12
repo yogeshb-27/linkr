@@ -42,4 +42,18 @@ const getAllUrl = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-module.exports = { createShortUrl, getUrl, getAllUrl };
+
+const deleteUrl = async (req, res) => {
+  try {
+    const { url } = req.params;
+    const response = await urlModel.findOne({ shortUrl: url });
+    if (!response) {
+      return res.status(404).json({ error: "URL Not Found" });
+    }
+    const deleteUrl = await urlModel.findByIdAndDelete(response._id);
+    res.status(200).json({ message: "URL deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+module.exports = { createShortUrl, getUrl, getAllUrl, deleteUrl };
