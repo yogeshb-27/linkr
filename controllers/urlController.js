@@ -1,6 +1,6 @@
-const { json } = require("express");
 const urlModel = require("../models/urlModel");
 const validator = require("validator");
+const qrcode = require("qrcode");
 
 const createShortUrl = async (req, res) => {
   try {
@@ -81,10 +81,26 @@ const deleteUrl = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+const generateQrCode = async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!validator.isURL(url)) {
+      return res.status(400).json({ error: "Invalid URL " });
+    }
+
+    const qrCode = await qrcode.toDataURL(url);
+    res.status(200).json(qrCode);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+    console.log(error);
+  }
+};
 module.exports = {
   createShortUrl,
   createCustomUrl,
   getUrl,
   getAllUrl,
   deleteUrl,
+  generateQrCode,
 };
