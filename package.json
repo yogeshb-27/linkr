@@ -1,0 +1,31 @@
+{
+  "name": "linkr",
+  "version": "1.0.0",
+  "description": "A personal URL shortener project built with Node.js, providing a simple yet powerful solution for shortening URLs, custom link creation, and QR code generation. Enhance your link-sharing experience with this easy-to-use and secure web application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "URL Shortener",
+    "Linkr",
+    "Short Links",
+    "Custom Links",
+    "QR Code Generator",
+    "User Authentication",
+    "Personalized URLs",
+    "Node.js",
+    "Express.js",
+    "MongoDB"
+  ],
+  "author": "yogesh bidave",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.2",
+    "express": "^4.18.2",
+    "mongoose": "^8.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
