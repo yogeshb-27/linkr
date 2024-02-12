@@ -1,7 +1,11 @@
 const express = require("express");
-const { createShortUrl, getUrl } = require("../controllers/urlController");
+const {
+  createShortUrl,
+  getUrl,
+  getAllUrl,
+} = require("../controllers/urlController");
 
 const router = express.Router();
-router.get("/:url", getUrl).post("/", createShortUrl);
+router.get("/", getAllUrl).get("/:url", getUrl).post("/", createShortUrl);
 
 module.exports = router;
