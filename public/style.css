@@ -1,0 +1,31 @@
+header {
+  min-height: 40vh;
+  background-color: #333;
+}
+.nav-link {
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-right: 2rem;
+}
+.nav-item .active {
+  color: #007bff !important;
+}
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 40vh;
+}
+form {
+  width: 25rem !important;
+}
+input,
+textarea,
+select,
+.margin {
+  border-radius: 0 !important;
+}
+footer{
+  background-color: #333;
+}
