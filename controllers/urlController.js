@@ -1,3 +1,4 @@
+const { json } = require("express");
 const urlModel = require("../models/urlModel");
 const validator = require("validator");
 
@@ -13,6 +14,26 @@ const createShortUrl = async (req, res) => {
     }
     const newURL = await urlModel.create({ fullUrl });
     res.status(201).json({ shortUrl: newURL.shortUrl });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const createCustomUrl = async (req, res) => {
+  try {
+    const { fullUrl, shortUrl } = req.body;
+    if (!validator.isURL(fullUrl)) {
+      return res.status(400).json({ error: "Invalid URL" });
+    }
+    if (!shortUrl) {
+      return res.status(400).json({ error: "Custom URL not provided" });
+    }
+    const existingURL = await urlModel.findOne({ shortUrl });
+    if (existingURL) {
+      return res.status(400).json({ error: "Short Url Allready Exists" });
+    }
+    const newURL = await urlModel.create({ fullUrl, shortUrl });
+    res.status(201).json({ message: "Custom Url Created" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -60,4 +81,10 @@ const deleteUrl = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-module.exports = { createShortUrl, getUrl, getAllUrl, deleteUrl };
+module.exports = {
+  createShortUrl,
+  createCustomUrl,
+  getUrl,
+  getAllUrl,
+  deleteUrl,
+};
