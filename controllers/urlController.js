@@ -13,5 +13,19 @@ const createShortUrl = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-module.exports = { createShortUrl };
+const getUrl = async (req, res) => {
+  try {
+    const { url } = req.params;
+    const response = await urlModel.findOne({ shortUrl: url });
+    if (!response) {
+      return res.status(404).json({ error: "URL Not Found" });
+    }
+    response.clicks++;
+    response.save();
+    const decodedUrl = decodeURIComponent(response.fullUrl);
+    res.redirect(decodedUrl);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+module.exports = { createShortUrl, getUrl };
