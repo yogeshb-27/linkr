@@ -12,7 +12,11 @@ const createShortUrl = async (req, res) => {
     if (existingURL) {
       return res.status(200).json({ shortUrl: existingURL.shortUrl });
     }
-    const newURL = await urlModel.create({ fullUrl });
+
+    const user = await userModel.findOne({ _id: req.user.userId });
+    const newURL = await urlModel.create({ fullUrl, userId: user._id });
+    user.urls.push(newURL._id);
+    await user.save();
     res.status(201).json({ shortUrl: newURL.shortUrl });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
@@ -32,7 +36,14 @@ const createCustomUrl = async (req, res) => {
     if (existingURL) {
       return res.status(400).json({ error: "Short Url Allready Exists" });
     }
-    const newURL = await urlModel.create({ fullUrl, shortUrl });
+    const user = await userModel.findOne({ _id: req.user.userId });
+    const newURL = await urlModel.create({
+      fullUrl,
+      shortUrl,
+      userId: user._id,
+    });
+    user.urls.push(newURL._id);
+    await user.save();
     res.status(201).json({ message: "Custom Url Created" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
@@ -57,7 +68,8 @@ const getUrl = async (req, res) => {
 
 const getAllUrl = async (req, res) => {
   try {
-    const response = await urlModel.find({});
+    const userId = req.user.userId;
+    const response = await urlModel.find({ userId });
     if (response.length < 0) {
       res.status(404).json({ error: "No URL Found" });
     } else {
@@ -74,6 +86,12 @@ const deleteUrl = async (req, res) => {
     const response = await urlModel.findOne({ shortUrl: url });
     if (!response) {
       return res.status(404).json({ error: "URL Not Found" });
+    }
+    const user = await userModel.findOne({ _id: req.user.usreId });
+    const urlIndex = user.urls.indexOf(result._id);
+    if (urlIndex !== -1) {
+      user.urls.splice(urlIndex, 1);
+      await user.save();
     }
     const deleteUrl = await urlModel.findByIdAndDelete(response._id);
     res.status(200).json({ message: "URL deleted successfully" });

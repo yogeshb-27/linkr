@@ -1,15 +1,11 @@
 const express = require("express");
 const router = express.Router();
-
+const authUser = require("../middlewares/authUser");
 router
   .get("/", (req, res) => {
     res.render("index");
   })
-  .get("/custom", (req, res) => {
-    res.render("custom");
-  })
-  .get("/qrcode", (req, res) => {
-    res.render("qrcode");
-  });
+  .get("/custom", authUser, (req, res) => res.render("custom"))
+  .get("/qrcode", authUser, (req, res) => res.render("qrcode"));
 
 module.exports = router;
