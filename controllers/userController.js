@@ -15,19 +15,18 @@ const registerUser = async (req, res) => {
     if (!validator.isLength(password, { min: 8 })) {
       return res
         .status(400)
-        .json({ error: "password length must be at least 8 characters" });
+        .json({ error: "password length must be at least 8" });
     }
     if (
       !validator.isStrongPassword(password, {
         minLength: 8,
-        minUppercase1,
+        minUppercase: 1,
         minNumbers: 1,
         minSymbols: 1,
       })
     ) {
       return res.status(400).json({ error: "password is not strong enough" });
     }
-
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ error: "email is already registered" });
@@ -38,6 +37,7 @@ const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
     });
+    // console.log(newUser);
     const token = jwtService.generateToken(newUser);
     res.cookie("token", token);
     res.status(201).json({ message: "Registration successful" });
