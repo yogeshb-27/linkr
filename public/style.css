@@ -43,3 +43,20 @@ footer{
   text-transform: capitalize;
   display: none;
 }
+.copy-icon,
+.delete-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  visibility: hidden;
+}
+#fullUrl:hover + .delete-icon,
+.delete-icon:hover {
+  color: red;
+} 
+#shortUrl:hover + .copy-icon,
+.copy-icon:hover {
+  color: #007bff;
+}

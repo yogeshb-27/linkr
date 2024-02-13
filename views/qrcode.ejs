@@ -64,16 +64,20 @@
     >
       <h1>Shorten you <span class="text-primary">links</span> now</h1>
     </header>
-    <section class="container form m-auto">
+    <section class="container form m-auto py-lg-5">
       <form>
-        <div class="mb-3 position-relative">
+        <div
+          class="mb-3 position-relative"
+          onmouseover="showDeleteIcon()"
+          onmouseout="hideDeleteIcon()"
+        >
           <input
             type="text"
             class="form-control"
             placeholder="Paste long URL"
             id="fullUrl"
             required
-          />
+          /><i class="bx bx-trash delete-icon" onclick="clearInputField()"></i>
         </div>
         <div class="d-flex justify-content-center">
           <div id="qrCodeContainer" class="position-relative p-4 my-2 shadow">

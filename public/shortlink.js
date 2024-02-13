@@ -34,3 +34,34 @@ document
       );
     }
   });
+
+const deleteIcon = document.querySelector(".delete-icon");
+const copyIcon = document.querySelector(".copy-icon");
+function showDeleteIcon() {
+  deleteIcon.style.visibility = "visible";
+}
+function hideDeleteIcon() {
+  deleteIcon.style.visibility = "hidden";
+}
+function showCopyIcon() {
+  copyIcon.style.visibility = "visible";
+}
+function hideCopyIcon() {
+  copyIcon.style.visibility = "hidden";
+}
+function clearInputFields() {
+  fullUrlInput.value = "";
+  shortUrlInput.value = "";
+}
+function copyShortUrl() {
+  const shortUrlInput = document.getElementById("shortUrl");
+  if (shortUrlInput.value.trim() !== "") {
+    shortUrlInput.select();
+    document.execCommand("copy");
+    showToast(
+      "<i class='bx bx-check text-success me-2'></i>",
+      `copied to clipboard !`,
+      "text-success"
+    );
+  }
+}

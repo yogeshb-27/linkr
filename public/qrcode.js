@@ -1,17 +1,19 @@
+const fullUrl = document.getElementById("fullUrl");
 document.querySelector("form").addEventListener("submit", async (event) => {
   event.preventDefault();
-  const fullUrl = document.getElementById("fullUrl").value;
+  const qrCodeContainer = document.getElementById("qrCodeContainer");
+  qrCodeContainer.style.display = "none";
+
   try {
     const response = await fetch("http://localhost:3001/api/qrcode", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ url: fullUrl }),
+      body: JSON.stringify({ url: fullUrl.value }),
     });
     const data = await response.json();
     if (response.ok) {
-      const qrCodeContainer = document.getElementById("qrCodeContainer");
       const img = document.getElementById("qr-img");
       img.src = data;
       qrCodeContainer.style.display = "block";
@@ -24,7 +26,6 @@ document.querySelector("form").addEventListener("submit", async (event) => {
       throw new Error(data.error);
     }
   } catch (error) {
-    console.error;
     showToast(
       "<i class='bx bx-error text-danger me-2' ></i>",
       `${error.message}`,
@@ -32,3 +33,14 @@ document.querySelector("form").addEventListener("submit", async (event) => {
     );
   }
 });
+
+const deleteIcon = document.querySelector(".delete-icon");
+function clearInputField() {
+  fullUrl.value = "";
+}
+function showDeleteIcon() {
+  deleteIcon.style.visibility = "visible";
+}
+function hideDeleteIcon() {
+  deleteIcon.style.visibility = "hidden";
+}
