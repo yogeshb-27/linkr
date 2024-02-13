@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Linkr</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="position-relative">
+    <div id="toast"></div>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="nav-link text-danger fs-5 ms-md-4" href="/">
+          <i class="bx bx-link me-2"></i>Linkr</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div
+            class="d-flex align-items-center justify-content-between flex-sm-column flex-md-row w-100"
+          >
+            <ul
+              class="navbar-nav d-flex align-items-center justify-content-center w-100"
+            >
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/custom">Custom URL</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/qrcode">QR Code</a>
+              </li>
+            </ul>
+            <ul
+              class="navbar-nav d-flex align-items-center justify-content-end w-100"
+            >
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/dashboard"
+                  >Dashboard</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="log-out">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <header
+      class="position-relative pt-4 d-flex justify-content-center align-items-center text-white flex-direction-column"
+    >
+      <h1>
+        Hello
+        <span class="text-capitalize text-primary"> <%= user.username %> </span>
+      </h1>
+      <p
+        class="text-white position-absolute bottom-0 start-50 mb-3 translate-middle"
+        id="total-links"
+      ></p>
+    </header>
+    <section class="container mx-auto my-5">
+      <div class="table-responsive w-100 px-lg-5 m-auto">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Full Url</th>
+              <th>Short Url</th>
+              <th>Clicks</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="urlList"></tbody>
+        </table>
+      </div>
+    </section>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", renderUrlList);
+      const totalLinks = document.querySelector("#total-links");
+
+      async function renderUrlList() {
+        try {
+          const response = await fetch("/api/");
+          const data = await response.json();
+
+          if (response.ok) {
+            const urlListContainer = document.getElementById("urlList");
+            urlListContainer.innerHTML = "";
+            totalLinks.textContent = `Total Links (${data.length})`;
+            data.forEach((url) => {
+              urlListContainer.innerHTML += `<tr>
+              <td><a href= "${url.fullUrl}">${url.fullUrl}</a> </td>
+              <td><a href= "http://localhost:3001/api/${url.shortUrl}">${url.shortUrl}</a> </td>
+              <td>${url.clicks} </td>
+              <td><i class='bx bx-trash-alt text-danger delete' onclick="deleteLink('${url.shortUrl}')"></i></td>
+              </tr>`;
+            });
+          } else {
+            throw new Error(data.error);
+          }
+        } catch (error) {
+          console.error(`Error: ${error.message}`);
+          showToast(
+            "<i class='bx bx-x text-danger me-2'></i>",
+            `Error: ${error.message}`,
+            "text-danger "
+          );
+        }
+      }
+      const deleteLink = async (shortUrl) => {
+        try {
+          const response = await fetch(`/api/${shortUrl}`, {
+            method: "DELETE",
+          });
+          const data = await response.json();
+          if (response.ok) {
+            showToast(
+              "<i class='bx bx-check text-success me-2'></i>",
+              "Link Deleted !",
+              "text-success "
+            );
+            renderUrlList();
+          } else {
+            throw new Error(data.error);
+          }
+        } catch (error) {
+          console.error(`Error: ${error.message}`);
+          showToast(
+            "<i class='bx bx-x text-danger me-2'></i>",
+            `Error: ${error.message}`,
+            "text-danger "
+          );
+        }
+      };
+    </script>
+  </body>
+</html>

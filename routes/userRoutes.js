@@ -10,7 +10,6 @@ const router = express.Router();
 router
   .post("/register", registerUser)
   .post("/login", loginUser)
-  .post("/logout", logoutUser)
-  .get("/dashboard", authUser);
+  .post("/logout", logoutUser);
 
 module.exports = router;
