@@ -1,18 +1,36 @@
 const userModel = require("../models/userModel");
 const jwtService = require("../config/jwtconfig");
+const validator = require("validator");
 
 const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
-      return res.status(500).json({ error: "all details required" });
+      return res.status(400).json({ error: "all details are required" });
+    }
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ error: "invalid email format" });
+    }
+    if (!validator.isLength(password, { min: 8 })) {
+      return res
+        .status(400)
+        .json({ error: "password length must be at least 8 characters" });
+    }
+    if (
+      !validator.isStrongPassword(password, {
+        minLength: 8,
+        minUppercase1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+    ) {
+      return res.status(400).json({ error: "password is not strong enough" });
     }
 
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return res.status(500).json({ error: "email is already registered" });
+      return res.status(409).json({ error: "email is already registered" });
     }
-
     const newUser = await userModel.create({ username, email, password });
     const token = jwtService.generateToken(newUser);
     res.cookie("token", token);
@@ -26,7 +44,10 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(500).json({ error: "all details required" });
+      return res.status(500).json({ error: "all details are  required" });
+    }
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ error: "invalid email format" });
     }
     const user = await userModel.findOne({ email });
     if (!user) {
@@ -41,4 +62,10 @@ const loginUser = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-module.exports = { registerUser, loginUser };
+
+const logoutUser = (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logout successful" });
+};
+
+module.exports = { registerUser, loginUser, logoutUser };
