@@ -63,6 +63,8 @@ const loginUser = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: "Incorrect password" });
     }
+    const token = jwtService.generateToken(user);
+    res.cookie("token", token);
     res.status(200).json({ message: "Log in successful" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });

@@ -1,4 +1,5 @@
 const urlModel = require("../models/urlModel");
+const userModel = require("../models/userModel");
 const validator = require("validator");
 const qrcode = require("qrcode");
 
