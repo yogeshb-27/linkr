@@ -15,9 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 
 const urlRoutes = require("./routes/urlRoutes");
 const staticRoutes = require("./routes/staticRoutes");
+const userRoutes = require("./routes/userRoutes");
 app.use("/api", urlRoutes);
+app.use("/user", userRoutes);
 app.use("/", staticRoutes);
-
 app.listen(port, () => {
   console.log(`server up at port: ${port} !`);
   connectDB;
