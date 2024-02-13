@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 const jwtService = require("../config/jwtconfig");
 const validator = require("validator");
+const bcrypt = require("bcrypt");
 
 const registerUser = async (req, res) => {
   try {
@@ -31,7 +32,12 @@ const registerUser = async (req, res) => {
     if (existingUser) {
       return res.status(409).json({ error: "email is already registered" });
     }
-    const newUser = await userModel.create({ username, email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await userModel.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
     const token = jwtService.generateToken(newUser);
     res.cookie("token", token);
     res.status(201).json({ message: "Registration successful" });
@@ -53,7 +59,7 @@ const loginUser = async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: "Account Not Found" });
     }
-    const passwordMatch = password === user.password;
+    const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       return res.status(401).json({ error: "Incorrect password" });
     }
