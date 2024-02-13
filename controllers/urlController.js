@@ -93,7 +93,7 @@ const generateQrCode = async (req, res) => {
     res.status(200).json(qrCode);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
-    console.log(error);
+    // console.log(error);
   }
 };
 module.exports = {

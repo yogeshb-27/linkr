@@ -19,10 +19,19 @@ document
 
       if (response.ok) {
         console.log("Custom Url Created");
+        showToast(
+          "<i class='bx bx-link-alt me-2 text-success'></i>",
+          "Custom Link Created",
+          "text-success"
+        );
       } else {
         throw new Error(data.error);
       }
     } catch (error) {
-      console.error(`Error: ${error.message}`);
+      showToast(
+        "<i class='bx bx-error text-danger me-2'></i>",
+        `${error.message}`,
+        "text-danger"
+      );
     }
   });
