@@ -43,14 +43,21 @@ footer{
   text-transform: capitalize;
   display: none;
 }
+.password-input {
+  position: relative;
+}
 .copy-icon,
-.delete-icon {
+.delete-icon,
+.toggle-password {
   position: absolute;
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
   cursor: pointer;
   visibility: hidden;
+}
+.toggle-password{
+  visibility: visible;
 }
 #fullUrl:hover + .delete-icon,
 .delete-icon:hover {
@@ -59,4 +66,7 @@ footer{
 #shortUrl:hover + .copy-icon,
 .copy-icon:hover {
   color: #007bff;
+}
+.login,.register{
+  height: 100vh;
 }

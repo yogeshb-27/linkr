@@ -6,6 +6,7 @@ router
     res.render("index");
   })
   .get("/custom", authUser, (req, res) => res.render("custom"))
-  .get("/qrcode", authUser, (req, res) => res.render("qrcode"));
+  .get("/qrcode", authUser, (req, res) => res.render("qrcode"))
+  .get("/register", (req, res) => res.render("register"));
 
 module.exports = router;

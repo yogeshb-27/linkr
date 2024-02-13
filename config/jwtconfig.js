@@ -1,4 +1,4 @@
-const jwt = requrie("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const generateToken = (user) => {
   const payload = {
