@@ -22,3 +22,18 @@ window.addEventListener("offline", () =>
     "text-danger"
   )
 );
+const logOut = document.querySelector("#log-out");
+logOut.addEventListener("click", async () => {
+  try {
+    const response = await fetch("/user/logout", {
+      method: "POST",
+    });
+    if (response.ok) {
+      window.location.href = "/";
+    } else {
+      console.error("Logout failed ");
+    }
+  } catch (error) {
+    console.error("Error during logout :", error);
+  }
+});
