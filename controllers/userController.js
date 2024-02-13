@@ -1,4 +1,5 @@
 const userModel = require("../models/userModel");
+const jwtService = require("../config/jwtconfig");
 
 const registerUser = async (req, res) => {
   try {
@@ -6,11 +7,15 @@ const registerUser = async (req, res) => {
     if (!username || !email || !password) {
       return res.status(500).json({ error: "all details required" });
     }
+
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return res.status(500).json({ error: "email is already registered" });
     }
+
     const newUser = await userModel.create({ username, email, password });
+    const token = jwtService.generateToken(newUser);
+    res.cookie("token", token);
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
