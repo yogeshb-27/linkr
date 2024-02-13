@@ -68,7 +68,8 @@ footer{
 .login,.register{
   height: 100vh;
 }
-#log-out{
+#log-out,
+.delete{
   color: red;
   cursor: pointer;
 }

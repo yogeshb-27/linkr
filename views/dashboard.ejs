@@ -73,7 +73,9 @@
     >
       <h1>
         Hello
-        <span class="text-capitalize text-primary"> <%= user.username %> </span>
+        <span class="text-capitalize text-primary">
+          <%= user.username.split(" ")[0] %>
+        </span>
       </h1>
       <p
         class="text-white position-absolute bottom-0 start-50 mb-3 translate-middle"
@@ -119,7 +121,8 @@
               <td><a href= "${url.fullUrl}">${url.fullUrl}</a> </td>
               <td><a href= "http://localhost:3001/api/${url.shortUrl}">${url.shortUrl}</a> </td>
               <td>${url.clicks} </td>
-              <td><i class='bx bx-trash-alt text-danger delete' onclick="deleteLink('${url.shortUrl}')"></i></td>
+              <td><i class='bx bx-trash-alt text-danger delete' onclick="deleteLink('${url.shortUrl}')"  data-bs-toggle="tooltip"
+            data-bs-placement="top" title="Delete Link"></i></td>
               </tr>`;
             });
           } else {

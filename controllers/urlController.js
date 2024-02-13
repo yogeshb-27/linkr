@@ -88,8 +88,8 @@ const deleteUrl = async (req, res) => {
     if (!response) {
       return res.status(404).json({ error: "URL Not Found" });
     }
-    const user = await userModel.findOne({ _id: req.user.usreId });
-    const urlIndex = user.urls.indexOf(result._id);
+    const user = await userModel.findOne({ _id: req.user.userId });
+    const urlIndex = user.urls.indexOf(response._id);
     if (urlIndex !== -1) {
       user.urls.splice(urlIndex, 1);
       await user.save();
