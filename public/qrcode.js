@@ -3,6 +3,7 @@ document.querySelector("form").addEventListener("submit", async (event) => {
   event.preventDefault();
   const qrCodeContainer = document.getElementById("qrCodeContainer");
   qrCodeContainer.style.display = "none";
+  const downloadLink = document.getElementById("qr-download");
 
   try {
     const response = await fetch("http://localhost:3001/api/qrcode", {
@@ -16,6 +17,8 @@ document.querySelector("form").addEventListener("submit", async (event) => {
     if (response.ok) {
       const img = document.getElementById("qr-img");
       img.src = data;
+      downloadLink.href = data;
+      downloadLink.download = "qrcode.png";
       qrCodeContainer.style.display = "block";
       showToast(
         "<i class='bx bx-qr-scan text-success me-2'></i>",

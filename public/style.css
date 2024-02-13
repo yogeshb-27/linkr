@@ -20,11 +20,9 @@ header {
 form {
   width: 25rem !important;
 }
-input,
-textarea,
-select,
-.margin {
+input {
   border-radius: 0 !important;
+  padding-right: 2rem !important;
 }
 footer{
   background-color: #333;
