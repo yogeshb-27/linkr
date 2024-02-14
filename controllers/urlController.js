@@ -56,7 +56,7 @@ const getUrl = async (req, res) => {
     const { url } = req.params;
     const response = await urlModel.findOne({ shortUrl: url });
     if (!response) {
-      return res.status(404).json({ error: "URL Not Found" });
+      return res.redirect("/404");
     }
     response.clicks++;
     response.save();

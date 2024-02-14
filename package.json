@@ -4,6 +4,7 @@
   "description": "A personal URL shortener project built with Node.js, providing a simple yet powerful solution for shortening URLs, custom link creation, and QR code generation. Enhance your link-sharing experience with this easy-to-use and secure web application.",
   "main": "index.js",
   "scripts": {
+    "node" : "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

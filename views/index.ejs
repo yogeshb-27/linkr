@@ -37,7 +37,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <div
-            class="d-flex align-items-center justify-content-between flex-sm-column flex-md-row w-100"
+            class="d-flex align-items-center justify-content-between flex-column flex-md-row w-100"
           >
             <ul
               class="navbar-nav d-flex align-items-center justify-content-center w-100"
@@ -80,9 +80,12 @@
       </div>
     </nav>
     <header
-      class="text-white text-center d-flex align-items-center justify-content-center flex-column"
+      class="text-white text-center d-flex align-items-center justify-content-center flex-column p-5 p-md-0"
     >
-      <h1>Shorten you <span class="text-primary">links</span> now</h1>
+      <h1>
+        Simplify Your Links: Try<span class="text-danger">Linkr </span> Today !
+      </h1>
+      <p>Simplify URL Sharing Instantly!</p>
     </header>
     <section class="container form m-auto">
       <form>
@@ -128,9 +131,15 @@
           ></i>
         </div>
         <div class="d-flex justify-content-center">
+          <% if(authenticated) {%>
           <button class="btn btn-primary w-50 my-2" type="submit">
             Shorten URL
           </button>
+          <% }else{%>
+          <a href="/login" class="btn btn-primary my-2 w-50"
+            >Login to get Started</a
+          >
+          <%}%>
         </div>
       </form>
     </section>
